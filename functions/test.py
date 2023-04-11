@@ -3,7 +3,7 @@ import hashlib
 import requests
 import os
 import pytest
-from functools import create_signature,create_query_string,sort_dictionary,upload_to_cloudinary,ask_gpt
+from functools import create_signature,create_query_string,sort_dictionary,upload_to_cloudinary,ask_gpt,read_this
 import boto3
 def test_sort_dict():
         timestamp = int(time.time)
@@ -23,11 +23,12 @@ def test_sort_dict():
                 "eager": eager,
                 "timestamp":timestamp
         }.items()
-qurey_string = create_qurey_string(res)
-assert qurey_string = "eager=w400,h_300"
+        api_secret = ""
+        qurey_string = create_query_string(res)
+        assert qurey_string == "eager=w400,h_300"
 
-signature = create_signature(body,api_secret)
-assert signature == "1234"
+        signature = create_signature(body,api_secret)
+        assert signature == "1234"
 #use secure url for dynamo db table 
 
 
