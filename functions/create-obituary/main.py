@@ -104,14 +104,14 @@ def gpt_prompt(name, birth, death):
        "Content-Type" : "application/json",
        "Authorization" : f"Bearer {api_secret}"
    }
-   prompt = f"write an obituary about {name}, a fictional character born on {birth} and died on {death}, leaves a heroic legacy of unwavering determination, selflessness, and inspiration"
+   prompt = f"write an obituary about {name}, a fictional character born on {birth} and died on {death}, who leaves a heroic legacy of unwavering determination, selflessness, and inspiration"
 
 
    body = {
        "model": "text-curie-001",
        "prompt": prompt,
-       "max_tokens": 600,
-       "temperature": 0.2
+       "max_tokens": 400,
+       "temperature": 0.4
    }
 
 
