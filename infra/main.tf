@@ -28,18 +28,13 @@ resource "aws_dynamodb_table" "lastshow-30144227" {
   # up to 1KB per second
   write_capacity = 1
 
-  #Need to change these values for the new dynamodb
-  # hash_key = "email"
-  # range_key = "note_id"
 
-  # attribute {
-  #   name = "note_id"
-  #   type = "S"
-  # }
-  # attribute {
-  #   name = "email"
-  #   type = "S"
-  # }
+  hash_key = "uuid"
+  
+  attribute {
+    name = "uuid"
+    type = "S"
+  }
 
 }
 
