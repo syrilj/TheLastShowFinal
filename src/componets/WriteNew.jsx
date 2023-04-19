@@ -2,25 +2,45 @@ import { useState } from "react";
 
 function WriteNew(){
     const [name, setName] = useState("");
-    const [when, setWhen] = useState(""); //for birthselect
-    const [death, setDeath] = useState(""); //for deathselect
+    const [when, setWhen] = useState("");
+    const [death, setDeath] = useState("");
     const [file, setFile] = useState(null);
 
-    const onSubmitForm = (e) => {
+    const onSubmitForm = async (e) => {
         e.preventDefault();
-        console.log(name, when, file);
+        console.log(name, when, death, file);
+    
         const data = new FormData();
         data.append("file", file);
         data.append("name", name);
         data.append("when", when);
-
-        // Send form data to server using fetch or axios or any other library
-        // ...
-        
-        // Redirect user to desired page implment later once other componets come later 
+        data.append("death", death);
+    
+        try {
+            // Make API call to server to create obituary
+            const response = await fetch("/api/create-obituary", {
+                method: "POST",
+                body: data
+            });
+    
+            if (response.ok) {
+                // Obituary created successfully
+                const result = await response.json();
+                const { obituary_text, audio_filename } = result;
+                
+                // Redirect user to desired page later once other components are implemented
+                window.location.href = "/";
+            } else {
+                // Handle error response
+                console.error("Failed to create obituary:", response.statusText);
+            }
+        } catch (error) {
+            // Handle network or server error
+            console.error("Failed to create obituary:", error);
+        }
         window.location.href = "/";
     };
-
+    
     const onFileChange = (e) => {
         console.log(e.target.files);
         setFile(e.target.files[0]);
@@ -28,9 +48,9 @@ function WriteNew(){
 
     return (
         <div className="WriteNew">
-            <h2 class="WriteNewobituarytext"> Create a New Obituary</h2>
-            <form class="formdiv" onSubmit={onSubmitForm}>
-                <div class="imgselectdiv">
+            <h2 className="WriteNewobituarytext"> Create a New Obituary</h2>
+            <form className="formdiv" onSubmit={onSubmitForm}>
+                <div className="imgselectdiv">
                     <input
                         className="imgselect"
                         type="file"
@@ -40,7 +60,7 @@ function WriteNew(){
                     />
                 </div>
                
-                <div class="nameboxdiv"> 
+                <div className="nameboxdiv"> 
                     <input 
                         className="namebox"
                         type="text"
@@ -70,7 +90,7 @@ function WriteNew(){
                     required
                 />
 
-                <button class="writeobituarybutton"> Write Obituary</button>
+                <button className="writeobituarybutton"> Write Obituary</button>
             </form>
         </div>
     );
