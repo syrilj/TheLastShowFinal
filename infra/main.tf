@@ -39,8 +39,8 @@ resource "aws_dynamodb_table" "lastshow-30144227" {
 }
 
 
-resource "aws_iam_role" "iam_for_lambda" {
-  name = "iam_for_lambda"
+resource "aws_iam_role" "iam_for_lambda_lastshow" {
+  name = "iam_for_lambda_lastshow"
 
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
@@ -56,8 +56,8 @@ resource "aws_iam_role" "iam_for_lambda" {
   })
 }
 
-resource "aws_iam_policy" "dynamodb-lambda-policy" {
-  name = "dynamodb_lambda_policy"
+resource "aws_iam_policy" "dynamodb-lambda-policy-lastshow" {
+  name = "dynamodb_lambda_policy_lastshow"
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -72,20 +72,20 @@ resource "aws_iam_policy" "dynamodb-lambda-policy" {
 
 resource "aws_iam_role_policy_attachment" "attach" {
 
-  role = aws_iam_role.iam_for_lambda.name
-  policy_arn = aws_iam_policy.dynamodb-lambda-policy.arn
+  role = aws_iam_role.iam_for_lambda_lastshow.name
+  policy_arn = aws_iam_policy.dynamodb-lambda-policy-lastshow.arn
 
 }
 
 data "archive_file" "get-obituaries-archive" {
   source_file = "../functions/get-obituaries/main.py"
-  output_path = "get-notes.zip"
+  output_path = "get-obituaries.zip"
   type        = "zip"
 }
 
 
 resource "aws_lambda_function" "get-obituaries" {
-  role          = aws_iam_role.iam_for_lambda.arn
+  role          = aws_iam_role.iam_for_lambda_lastshow.arn
   handler       = "main.lambda_handler"
   function_name = "get-obituaries-30145947"
   filename      = "get-obituaries.zip"
@@ -121,7 +121,7 @@ data "archive_file" "create-obituary-archive" {
 }
 
 resource "aws_lambda_function" "create-obituary" {
-  role          = aws_iam_role.iam_for_lambda.arn
+  role          = aws_iam_role.iam_for_lambda_lastshow.arn
   handler       = "main.lambda_handler"
   function_name = "create-obituary-30145947"
   filename      = "create-obituary.zip"
