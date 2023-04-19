@@ -143,8 +143,8 @@ def read_this(text):
 def get_cloudinary_url(filename):
     return upload_to_cloudinary(filename)['url']
 
-# def get_gpt_text(name, birth, death):
-#     return ask_gpt(name, birth, death)
+def get_gpt_text(name, birth, death):
+    return ask_gpt(name, birth, death)
 
 def get_polly_url(text):
     filename = read_this(text)
