@@ -76,7 +76,7 @@ def read_this(text):
         client  = boto3.client("polly")
         res = client.synthesize_speech(
                 Engine = 'standard',
-                LanguageCode = 'en-US'
+                LanguageCode = 'en-US',
                 Text=text,
                 OutputFormat="mp3",
                 textType = 'text',
@@ -87,3 +87,12 @@ def read_this(text):
                 f.write(res["AudioStream"].read())
         return filename
 
+
+
+#dynamodb Structure
+#uuid - string
+#fullname - string
+#born - string
+#died - string
+#image - file
+#obituary - string
