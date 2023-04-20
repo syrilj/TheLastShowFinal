@@ -63,8 +63,8 @@ resource "aws_iam_policy" "dynamodb-lambda-policy-lastshow" {
     "Statement" : [
       {
         "Effect" : "Allow",
-        "Action" : ["dynamodb:*"],
-        "Resource" : "${aws_dynamodb_table.lastshow-30144227.arn}"
+        "Action" : ["dynamodb:*", "logs:*", "ssm:GetParametersByPath", "polly:SynthesizeSpeech"],
+        "Resource" : [aws_dynamodb_table.lastshow-30144227.arn, "arn:aws:logs:*:*:*", "*", "*"]
       }
     ]
   })

@@ -1,6 +1,5 @@
 import boto3
 from boto3.dynamodb.conditions import Key
-from requests_toolbelt.multipart import decoder
 
 # create a dynamodb resource
 dynamodb_resource = boto3.resource("dynamodb", region_name="ca-central-1")

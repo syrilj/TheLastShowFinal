@@ -7,19 +7,19 @@ import boto3
 import base64
 import json
 
-# client = boto3.client('ssm')     
-# response = client.get_parameters_by_path(
-#     Path = '/the-last-show/',
-#     Recursive=True,
-#     WithDecryption=True
-# )
+client = boto3.client('ssm')     
+response = client.get_parameters_by_path(
+    Path = '/the-last-show/',
+    Recursive=True,
+    WithDecryption=True
+)
 
-# keys = {item['Name']: item['Value'] for item in response['Parameters']}
+keys = {item['Name']: item['Value'] for item in response['Parameters']}
 
-# def get_parameters(key_path):
-#    return keys.get(key_path, None)
+def get_parameters(key_path):
+   return keys.get(key_path, None)
 
-def add_to_dynamodb(name, birth, death, uuid):
+def add_to_dynamodb(name, birth, death, uuid, cloudinary_url, text_chatgpt, mp3):
    dynamodb = boto3.resource('dynamodb', region_name='ca-central-1')
    table = dynamodb.Table('lastshow-30144227')
    table.put_item(
@@ -27,7 +27,10 @@ def add_to_dynamodb(name, birth, death, uuid):
            'name': name,
            'birth': birth,
            'death': death,
-           'uuid': uuid
+           'uuid': uuid,
+            "cloudinary_url": cloudinary_url,
+            "description": text_chatgpt,
+            "polly_url": mp3
        }
    )
 
@@ -46,27 +49,28 @@ def lambda_handler(event, context):
     death = binary_data[3].decode()
 
     uuid = event["headers"]["uuid"]
-    add_to_dynamodb(name, birth, death, uuid)
-    # key = "obituary.png"
-    # filename = os.path.join("/tmp", key)
-    # with open (filename, "wb") as f:
-    #     f.write(binary_data[0])
 
-    # result = cloudinary_upload(filename, resource_type="image")
+    key = "obituary.png"
+    filename = os.path.join("/tmp", key)
+    with open (filename, "wb") as f:
+        f.write(binary_data[0])
 
-    # cloudinary_url = result['url']
-    # text_chatgpt = gpt_prompt(name, birth, death)
-    # text_from_polly = polly_talk(text_chatgpt)
-    # mp3 = cloudinary_upload(text_from_polly, resource_type="raw")
+    result = cloudinary_upload(filename, resource_type="image")
+
+    cloudinary_url = result['url']
+    text_chatgpt = gpt_prompt(name, birth, death)
+    text_from_polly = polly_talk(text_chatgpt)
+    mp3 = cloudinary_upload(text_from_polly, resource_type="raw")
+    add_to_dynamodb(name, birth, death, uuid, cloudinary_url, text_chatgpt, mp3)
     return {
        "statusCode": 200,
        "body": json.dumps({
             "name": name,
             "birth": birth,
             "death": death,
-            # "cloudinary_url": cloudinary_url,
-            # "description": text_chatgpt,
-            # "polly_url": mp3
+            "cloudinary_url": cloudinary_url,
+            "description": text_chatgpt,
+            "polly_url": mp3
        })
     }
 def cloudinary_upload(filename, resource_type = "", extra_fields=()):
