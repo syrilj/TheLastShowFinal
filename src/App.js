@@ -6,7 +6,6 @@ import Obituaries from './componets/Obituaries';
 function App() {
   const[showDesign, setShowDesign] = useState(false);
   const[showWriteNew, setShowWriteNew] = useState(false);
-  const [obituaries, setObituaries] = useState(/*JSON.parse(localStorage.getItem("obituaries")) || */[])
 
   const handleWriteClick = () =>{
     setShowWriteNew(true);
@@ -14,7 +13,6 @@ function App() {
 
   const onWrite = async (obituaryData) => {
     setObituaries([obituaryData, ...obituaries]);// using a LRU replacement policy 
-    setObituaries(obituaryData);
     setShowWriteNew(false);
   }
   return (

@@ -1,5 +1,6 @@
 import boto3
 from boto3.dynamodb.conditions import Key
+from requests_toolbelt.multipart import decoder
 
 # create a dynamodb resource
 dynamodb_resource = boto3.resource("dynamodb", region_name="ca-central-1")
@@ -12,15 +13,14 @@ def lambda_handler(event, context):
     http_method = event["requestContext"]["http"]["method"].lower()
     obituaries = []
     if http_method == "get":
+        #get uuid from header
+        uuid = event["headers"]["uuid"]
 
-        uuid = event["queryStringParameters"]["uuid"]
-          
         response = table.query(
             TableName = table_name,
             KeyConditionExpression=Key("uuid").eq(uuid)
         )
         obituaries = response["Items"]
-        
+
     return obituaries
 
-    

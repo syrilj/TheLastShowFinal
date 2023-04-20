@@ -5,7 +5,7 @@ import os
 import pytest
 import boto3
 import importlib.util
-spec = importlib.util.spec_from_file_location("create-obituary", "/Users/syriljacob/Documents/the-last-show-hamza-and-syril/functions/create-obituary/main.py")
+spec = importlib.util.spec_from_file_location("create-obituary", "functions/create-obituary/main.py")
 create_obituary = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(create_obituary)
 
