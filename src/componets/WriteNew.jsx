@@ -25,36 +25,21 @@ function WriteNew(){
         data.append("when", when);
         data.append("death", death);
         console.log(data);
-        try {
-            // Make API call to server to create obituary
-            const response = await fetch("https://34seqfyek6m3nilto6ndl2i6li0mhxhl.lambda-url.ca-central-1.on.aws/", {
+        try{
+            const res = await fetch("https://34seqfyek6m3nilto6ndl2i6li0mhxhl.lambda-url.ca-central-1.on.aws/", {
                 method: "POST",
                 body: data,
                 headers: {
-                    "uuid": uuid
+                    'uuid': uuid
                 }
             });
-
-    
-            if (response.ok) {
-                // Obituary created successfully
-                const result = await response.json();
-                // const { obituary_text, audio_filename } = result;
-                // console.log("Obituary created successfully:", obituary_text, audio_filename);
-                handleAddObituary(result);
-                //add new obituary to the list of obituaries
-
-                // Redirect user to desired page later once other components are implemented
-                // window.location.href = "/";
-            } else {
-                // Handle error response
-                console.error("Failed to create obituary:", response.statusText);
-            }
-        } catch (error) {
-            // Handle network or server error
-            console.error("Failed to create obituary:", error);
+            const body = await res.json();
+            console.log(body);
         }
-        window.location.href = "/";
+        catch(err){
+            console.error(err.message);
+        }
+
     };
     
     const onFileChange = (e) => {

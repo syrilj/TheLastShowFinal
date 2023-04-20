@@ -78,7 +78,7 @@ resource "aws_iam_role_policy_attachment" "attach" {
 }
 
 data "archive_file" "get-obituaries-archive" {
-  source_file = "../functions/get-obituaries/main.py"
+  source_dir = "../functions/get-obituaries"
   output_path = "get-obituaries.zip"
   type        = "zip"
 }
@@ -115,7 +115,7 @@ output "get-obituaries_url" {
 }
 
 data "archive_file" "create-obituary-archive" {
-  source_file = "../functions/create-obituary/main.py"
+  source_dir = "../functions/create-obituary"
   output_path = "create-obituary.zip"
   type        = "zip"
 }

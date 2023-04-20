@@ -14,25 +14,13 @@ response = client.get_parameters_by_path(
     WithDecryption=True
 )
 
+dynamodb = boto3.resource('dynamodb', region_name='ca-central-1')
+table = dynamodb.Table('lastshow-30144227')
+
 keys = {item['Name']: item['Value'] for item in response['Parameters']}
 
 def get_parameters(key_path):
    return keys.get(key_path, None)
-
-def add_to_dynamodb(name, birth, death, uuid, cloudinary_url, text_chatgpt, mp3):
-   dynamodb = boto3.resource('dynamodb', region_name='ca-central-1')
-   table = dynamodb.Table('lastshow-30144227')
-   table.put_item(
-       Item={
-           'name': name,
-           'birth': birth,
-           'death': death,
-           'uuid': uuid,
-            "cloudinary_url": cloudinary_url,
-            "description": text_chatgpt,
-            "polly_url": mp3
-       }
-   )
 
 def lambda_handler(event, context):
     body = event["body"] 
@@ -57,22 +45,43 @@ def lambda_handler(event, context):
 
     result = cloudinary_upload(filename, resource_type="image")
 
+
     cloudinary_url = result['url']
     text_chatgpt = gpt_prompt(name, birth, death)
-    text_from_polly = polly_talk(text_chatgpt)
+
+    text_from_polly = polly_talk("Hello, this is Billy Bob Junior reporting for duty")
     mp3 = cloudinary_upload(text_from_polly, resource_type="raw")
-    add_to_dynamodb(name, birth, death, uuid, cloudinary_url, text_chatgpt, mp3)
-    return {
-       "statusCode": 200,
-       "body": json.dumps({
-            "name": name,
-            "birth": birth,
-            "death": death,
+
+    try:
+        table.put_item(
+        Item={
+            'name': name,
+            'birth': birth,
+            'death': death,
+            'uuid': uuid,
             "cloudinary_url": cloudinary_url,
             "description": text_chatgpt,
-            "polly_url": mp3
-       })
-    }
+            "polly_url": mp3["secure_url"]
+        }
+   ) 
+        return {
+        "statusCode": 200,
+        "body": json.dumps({
+                "name": name,
+                "birth": birth,
+                "death": death,
+                "cloudinary_url": cloudinary_url,
+                "description": text_chatgpt,
+                "polly_url": mp3["secure_url"]
+        })
+        }
+    except Exception as e:
+        return {
+        "statusCode": 500,
+        "body": json.dumps({
+            "message": "Error adding item to database"
+        })
+        }
 def cloudinary_upload(filename, resource_type = "", extra_fields=()):
    api_secret = get_parameters("/the-last-show/secret-key-cloudinary")
    api_key = get_parameters("/the-last-show/key-cloudinary")
@@ -128,13 +137,14 @@ def gpt_prompt(name, birth, death):
    body = {
        "model": "text-curie-001",
        "prompt": prompt,
-       "max_tokens": 400,
+       "max_tokens": 600,
        "temperature": 0.4
    }
 
 
    result = requests.post(url, headers=headers, json=body)
    return result.json()["choices"][0]["text"]
+
 
 def polly_talk(prompt):
    client = boto3.client('polly')
