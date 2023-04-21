@@ -39,15 +39,9 @@ function Design() {
     });
   }, [uuid]);
 
-
-
-  
-
-
-
   return (
     <div className="flex flex-col h-screen">
-      <Header />
+      <Header obituaries={obituaries} uuid={uuid} setObituaries={setObituaries} />
       <div className="flex-1">
         <Outlet context={[obituaries, uuid, setObituaries]} />
       </div>

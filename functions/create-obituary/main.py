@@ -48,7 +48,6 @@ def lambda_handler(event, context):
 
     cloudinary_url = result['url']
     text_chatgpt = gpt_prompt(name, birth, death)
-
     text_from_polly = polly_talk(text_chatgpt)
     mp3 = cloudinary_upload(text_from_polly, resource_type="raw")
 

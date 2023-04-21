@@ -1,5 +1,5 @@
 import { useOutletContext } from "react-router-dom";
-import Obituaries from "./Obituaries";
+import Obituaries from "../components/Obituaries";
 
 function Home() {
   const[obituaries, uuid, setObituaries] = useOutletContext();

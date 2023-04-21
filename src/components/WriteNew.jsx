@@ -1,29 +1,29 @@
 import { useState } from "react";
-import { useOutletContext } from 'react-router-dom';
 
-function WriteNew(){
-    const[obituaries, uuid, setObituaries] = useOutletContext();
+function WriteNew({obituaries, uuid, setObituaries, handleCloseModal}){
 
     const [name, setName] = useState("");
     const [when, setWhen] = useState("");
     const [death, setDeath] = useState("");
     const [file, setFile] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const handleAddObituary = (obituary) => {
         setObituaries([...obituaries, obituary]);
     };
     
 
+
     const onSubmitForm = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
     
         const data = new FormData();
         data.append("file", file);
         data.append("name", name);
         data.append("when", when);
         data.append("death", death);
-
+        console.log(data)
         try{
             const res = await fetch("https://34seqfyek6m3nilto6ndl2i6li0mhxhl.lambda-url.ca-central-1.on.aws/", {
                 method: "POST",
@@ -33,8 +33,9 @@ function WriteNew(){
                 }
             });
             const body = await res.json();
+            setLoading(false);
             handleAddObituary(body);
-            window.location = "/";
+            handleCloseModal();
         }
         catch(err){
             console.error(err.message);
@@ -89,8 +90,8 @@ function WriteNew(){
                     type="datetime-local"
                     required
                 />
-
-                <button className="writeobituarybutton"> Write Obituary</button>
+                {loading ? <button className="loadingobituarybutton" disabled={loading}>Please wait. It's not like they're gonna be late for something ...</button> : <button className="writeobituarybutton">Write Obituary</button>}
+                
             </form>
         </div>
     );
