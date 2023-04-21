@@ -8,7 +8,6 @@ function WriteNew(){
     const [when, setWhen] = useState("");
     const [death, setDeath] = useState("");
     const [file, setFile] = useState(null);
-    console.log("uuid: ", uuid)
 
     const handleAddObituary = (obituary) => {
         setObituaries([...obituaries, obituary]);
@@ -24,7 +23,7 @@ function WriteNew(){
         data.append("name", name);
         data.append("when", when);
         data.append("death", death);
-        console.log(data);
+
         try{
             const res = await fetch("https://34seqfyek6m3nilto6ndl2i6li0mhxhl.lambda-url.ca-central-1.on.aws/", {
                 method: "POST",
