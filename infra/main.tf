@@ -30,11 +30,17 @@ resource "aws_dynamodb_table" "lastshow-30144227" {
 
 
   hash_key = "uuid"
+  range_key = "name"
   
   attribute {
     name = "uuid"
     type = "S"
   }
+  attribute {
+    name = "name"
+    type = "S"
+  }
+
 
 }
 
