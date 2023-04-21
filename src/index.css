@@ -1,99 +1,6 @@
-body,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-li,
-p {
-  margin: 0;
-  padding: 0;
-}
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-body {
-  font-family: Arial, Helvetica, sans-serif !important;
-  max-height: 100vh;
-  color: #333;
-}
-::-webkit-scrollbar {
-  width: 8px;
-  background: #eee;
-}
-::-webkit-scrollbar-thumb {
-  background-color: rgb(215, 215, 215);
-}
-button,
-input {
-  border: none;
-  outline: none;
-  background-color: transparent;
-}
-button {
-  cursor: pointer;
-}
-#container {
-  min-height: 100vh;
-  max-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  margin: 0 auto;
-}
-
-#container > header {
-  border-top: 3px solid gray;
-  padding: 10px 50px; /* fixed padding values */
-  width: 100%; /* fixed width value */
-  
-}
-header h1 a:hover {
-  color: gray;
-}
-header {
-  display: flex;
-  height: 50px;
-  border-bottom: 1px solid #eee;
-  margin-bottom: -75px;
-  justify-content: center;
-}
-
-#menu-button {
-  font-size: 20px;
-  top: 0;
-  right: 0;
-  position: fixed;
-  height: 74px;
-  width: 160px;
-}
-
-button:hover,
-.button:hover {
-  background-color: gray;
-  color: white;
-}
-
-#app-moto {
-  color: black;
-  position: absolute;
-  top: 0;
-  margin-top: 38px;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-#BlankCard-holder {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 1.5em;
-  color: grey;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 .WriteNew{
   display: flex;
@@ -155,5 +62,3 @@ button:hover,
 .WriteNewobituarytext{
   padding-bottom: 60px;
 }
-
-
