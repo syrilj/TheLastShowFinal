@@ -62,3 +62,7 @@
 .WriteNewobituarytext{
   padding-bottom: 60px;
 }
+@font-face {
+  font-family: 'Satisfy';
+  src: url('./Satisfy/Satisfy-Regular.ttf') format('truetype');
+}
