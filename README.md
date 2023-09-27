@@ -90,4 +90,4 @@ In case you're doing the assignment as part of a group, pay attention to the fol
   - `save-item` that uses DynamoDB to store a new item
 - You must create all the infra using Terraform
 - Step Functions won't send you a response right away, but the app still needs to find out when the workflow is finished and add a new obituary to the front-end
-- No partial implementation is considered. If the implementation doesn't work properly from beginning to end, there will be no bonus marks for the assignment
+- No partial implementation is considered. If the implementation doesn't work properly from beginning to end, there will be no bonus marks for the assignment# TheLastShowFinal
